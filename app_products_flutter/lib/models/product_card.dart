@@ -18,51 +18,17 @@ class ProductCard extends StatelessWidget {
     const fontStyle2 = TextStyle(
         fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 12);
 
-    return Column(
-      children: [
-        InkWell(
-          onTap: () => {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const Icon(Icons.share)))
-          },
-          child: Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(150)),
-              elevation: 25,
-              child: SizedBox(
-                height: 60,
-                width: 190,
-                child: Row(
-                  children: [
-                    Column(
-                      children: [
-                        ClipPath(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: const Icon(Icons.image),
-                          ),
-                        )
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(name, style: fontStyle1),
-                          Text(
-                            position,
-                            style: fontStyle2,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )),
-        ),
-      ],
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(150)),
+      elevation: 25,
+      child: const CircleAvatar(
+        radius: 40.0,
+        backgroundImage:
+            NetworkImage('https://cdn.dsmcdn.com/ty158/product/media/images/20210809/12/117071800/224878258/1/1_org_zoom.jpg'),
+        backgroundColor: Colors.transparent,
+      )
     );
   }
 }
+
