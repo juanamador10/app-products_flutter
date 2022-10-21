@@ -1,5 +1,5 @@
-import 'package:app_products_flutter/models/product_card.dart';
-import 'package:app_products_flutter/models/product_show_card.dart';
+import 'package:app_products_flutter/widgets/product_card.dart';
+import 'package:app_products_flutter/widgets/product_show_card.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -111,25 +111,15 @@ class _HomeScreenState extends State<HomeScreen> {
             Column(
               children: [
                 SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
                   child: Row(
               //scrollDirection: Axis.horizontal,
               // ignore: prefer_const_literals_to_create_immutables - - - - - - - 
               // ignore: prefer_const_literals_to_create_immutables
                     children: [
-                      GestureDetector(
-                        onTap: () => {prodcutChange("Change name", "Change Position"), },
-                        child: const ProductCard(name: "name", position: "position",),
-                      )
-                      ,
-                      FloatingActionButton(
-                        onPressed:  () => {
-                          prodcutChange("Change name", "Change Position"), 
-                          }
-                        ),
-                      TextButton(
-                        style: TextButton.styleFrom(foregroundColor: Colors.yellow),
-                        onPressed: () => {prodcutChange("Change name 2", "Change Position 2"), },
-                        child: const Text("Clickkk")),
+                      const ProductCard(name: "name", position: "position",),
+                      const ProductCard(name: "name", position: "position",),
+                      const ProductCard(name: "name", position: "position",)
                     ],
                   ),
                 ),
