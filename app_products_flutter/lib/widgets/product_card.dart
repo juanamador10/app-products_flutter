@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
-  final String name;
-  final String position;
+  final String pathImage;
 
   const ProductCard(
       {Key? key,
-      required this.name,
-      required this.position,})
+      required this.pathImage,})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    /*
     const fontStyle1 = TextStyle(
       fontWeight: FontWeight.bold,
     );
     const fontStyle2 = TextStyle(
         fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 12);
+    */
 
     return Stack(
       alignment: Alignment.center,

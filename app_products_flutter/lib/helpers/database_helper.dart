@@ -13,7 +13,7 @@ class DatabaseHelper {
 
   Future<Database>_initDatabase() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String path = join (documentDirectory.path, 'products_save.db');
+    String path = join (documentDirectory.path, 'dbproducts.db');
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
@@ -22,7 +22,15 @@ class DatabaseHelper {
       '''
         CREATE TABLE products (
           id INTEGER PRIMARY KEY,
-          name TEXT
+          category TEXT,
+          price  INTEGER,
+          ranking INTEGER,
+          title TEXT,
+          description TEXT,
+          calories TEXT,
+          aditives TEXT,
+          vitamines TEXT,
+          imagepath TEXT
         )
       '''
     );
@@ -32,13 +40,21 @@ class DatabaseHelper {
     Database db = await instance.database;
     var products = await db.query('products', orderBy: 'id');
 
-    List<Cat> productsList = products.isNotEmpty ? products.map((e) => Product.fromMap(e)).toList() : [];
+    List<Product> productsList = products.isNotEmpty ? products.map((e) => Product.fromMap(e)).toList() : [];
     return productsList;
   }
 
-  Future<int> update(Product cat) async {
+  Future<List<Product>> getOneProduct(String productName) async {
     Database db = await instance.database;
-    return db.update('products', product.toMap(), where: 'id = ?', whereArgs: [products.id]);
+    var products = await db.query('products', where: 'id = ?', whereArgs: [productName]);
+
+    List<Product> productsList = products.isNotEmpty ? products.map((e) => Product.fromMap(e)).toList() : [];
+    return productsList;
+  }
+
+  Future<int> update(Product product) async {
+    Database db = await instance.database;
+    return db.update('products', product.toMap(), where: 'id = ?', whereArgs: [product.id]);
   }
 
   Future<int> delete(int id) async {
@@ -50,5 +66,7 @@ class DatabaseHelper {
     Database db = await instance.database;
     return await db.insert('products', product.toMap());
   }
+
+  getProductsCategory(String selectedCategory) {}
 
 }
