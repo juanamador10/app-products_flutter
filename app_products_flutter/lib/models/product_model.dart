@@ -1,25 +1,23 @@
+//The Order Doesn't Matter
 class Product {
-  //int id
   final int? id;
-  final String category;
-  final double price;
-  final int ranking;
   final String title;
   final String description;
+  final String category;
+  final int ranking;
+  final double price;
   final String calories;
   final String aditives;
   final String vitamines;
   final String imagepath;
 
-//no importa el orden en el que se pasen los parametros
-  //required this.id, ver como le puedo quitar el id
   Product(
       {this.id,
-      required this.category,
-      required this.price,
-      required this.ranking,
       required this.title,
       required this.description,
+      required this.category,
+      required this.ranking,
+      required this.price,
       required this.calories,
       required this.aditives,
       required this.vitamines,
@@ -27,11 +25,11 @@ class Product {
 
   factory Product.fromMap(Map<String, dynamic> json) => Product(
       id: json['id'],
-      category: json['category'],
-      price: json['price'],
-      ranking: json['ranking'],
       title: json['title'],
       description: json['description'],
+      category: json['category'],
+      ranking: json['ranking'],
+      price: json['price'].toDouble(),
       calories: json['calories'],
       aditives: json['aditives'],
       vitamines: json['vitamines'],
@@ -40,15 +38,15 @@ class Product {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'category': category,
-      'price': price,
-      'ranking': ranking,
       'title': title,
       'description': description,
+      'category': category.toLowerCase(),
+      'ranking': ranking,
+      'price': price,
       'calories': calories,
       'aditives': aditives,
       'vitamines': vitamines,
-      'imagepath': imagepath
+      'imagepath': imagepath,
     };
   }
 }

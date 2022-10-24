@@ -67,6 +67,15 @@ class DatabaseHelper {
     return await db.insert('products', product.toMap());
   }
 
-  getProductsCategory(String selectedCategory) {}
+  Future<List<Product>> getProductsCategory(String selectedCategory) async {
+    Database db = await instance.database;
+    var products = await db.query('products', orderBy:'category', where: 'category = ?', whereArgs: [selectedCategory]);
+
+    List<Product> productsList = products.isNotEmpty ? products.map((e) => Product.fromMap(e)).toList() : [];
+    return productsList;
+  }
+
+  
+
 
 }
