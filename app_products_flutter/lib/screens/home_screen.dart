@@ -1,4 +1,7 @@
+import 'package:app_products_flutter/screens/product_details.dart';
+import 'package:app_products_flutter/widgets/product_details_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../helpers/database_helper.dart';
 import '../models/product_model.dart';
 
@@ -13,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String selectedCategory = "candies";
-  String productName="Galletas Solidarias";
+  int productId = 1;
   String noImage = "https://dues.com.mx/duesAdmin/assets/web-page/logos/defaultSF.png";
   @override
   Widget build(BuildContext context) {
@@ -109,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle, color: Colors.orange),
                   child: FutureBuilder<List<Product>>(
-                    future: DatabaseHelper.instance.getOneProduct(productName),
+                    future: DatabaseHelper.instance.getOneProduct(productId),
                     builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
                       if (!snapshot.hasData) {
                         return 
@@ -131,6 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Container(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(8.0),
@@ -150,23 +154,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             children: snapshot.data!.map((product) {
-                              return Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      const SizedBox(height: 10),
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(8.0),
-                                        child: Image(
-                                          image: NetworkImage(product.imagepath),
-                                          height: 250.0,
-                                          width: 180,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              );
+                              return ProductDetailsCard(
+                                imagePath: product.imagepath, 
+                                title: product.title, 
+                                price: product.price, 
+                                ranking: product.ranking);
                             },
                           ).toList()
                         );
@@ -227,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       setState((){
-                                        productName=product.title;
+                                        productId= product.id!;
                                       });
                                       print(product.category);
                                     },

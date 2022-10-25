@@ -44,9 +44,9 @@ class DatabaseHelper {
     return productsList;
   }
 
-  Future<List<Product>> getOneProduct(String productName) async {
+  Future<List<Product>> getOneProduct(int productId) async {
     Database db = await instance.database;
-    var products = await db.query('products', where: 'id = ?', whereArgs: [productName]);
+    var products = await db.query('products', where: 'id = ?', whereArgs: [productId]);
 
     List<Product> productsList = products.isNotEmpty ? products.map((e) => Product.fromMap(e)).toList() : [];
     return productsList;

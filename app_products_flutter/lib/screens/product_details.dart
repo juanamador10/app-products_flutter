@@ -49,7 +49,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         children: [
           FutureBuilder<List<Product>>(
               future:
-                  DatabaseHelper.instance.getOneProduct(widget.productTitle),
+                  DatabaseHelper.instance.getOneProduct(1),
               builder: (BuildContext context,
                   AsyncSnapshot<List<Product>> snapshot) {
                 if (!snapshot.hasData) {
