@@ -1,4 +1,6 @@
-import 'package:app_products_flutter/screens/product_details.dart';
+import 'dart:io';
+
+import 'package:app_products_flutter/screens/product_details_screen.dart';
 import 'package:app_products_flutter/widgets/product_details_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -15,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String selectedCategory = "candies";
+  String selectedCategory = "candy";
   int productId = 1;
   String noImage = "https://dues.com.mx/duesAdmin/assets/web-page/logos/defaultSF.png";
   @override
@@ -76,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          selectedCategory = "fruits";
+                          selectedCategory = "fruit";
                           print(selectedCategory);
                         });
                       },
@@ -154,11 +156,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             children: snapshot.data!.map((product) {
-                              return ProductDetailsCard(
-                                imagePath: product.imagepath, 
-                                title: product.title, 
-                                price: product.price, 
-                                ranking: product.ranking);
+                              return GestureDetector(
+                                onLongPress: () {
+                                  Navigator.push(context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductDetails(productIdCard: productId,)
+                                    )
+                                  );
+                                },
+                                child: ProductDetailsCard(
+                                  p_id: product.id!.toInt(),
+                                  imagePath: product.imagepath, 
+                                  title: product.title, 
+                                  price: product.price, 
+                                  ranking: product.ranking),
+                              );
                             },
                           ).toList()
                         );
@@ -219,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       setState((){
-                                        productId= product.id!;
+                                        productId= product.id!.toInt();
                                       });
                                       print(product.category);
                                     },
@@ -229,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
-                                      child: Image(image: NetworkImage(product.imagepath), width: 110,)
+                                      child: Image(image: FileImage(File(product.imagepath)), width: 110,)
                                     ),
                                   )
                                 ),

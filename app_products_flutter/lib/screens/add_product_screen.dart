@@ -1,5 +1,10 @@
+
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:image_picker/image_picker.dart';
 import '../helpers/database_helper.dart';
 import '../models/product_model.dart';
 import 'home_screen.dart';
@@ -11,7 +16,28 @@ class AddProductScreen extends StatefulWidget {
   State<AddProductScreen> createState() => _AddProductScreenState();
 }
 
+
+
+
+
 class _AddProductScreenState extends State<AddProductScreen> {
+  File? image;
+
+  Future pickImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if(image == null)  return;
+    final imageTemporary  = File(image.path);
+    
+    setState(() {
+      this.image = imageTemporary;
+      print("AAAAAAAAAAAA ${imageTemporary.path}");
+      textControllerImagePath.text = imageTemporary.path;
+      
+    });
+  }
+  
+
+  //final textControllerId = TextEditingController();
   final textControllerTitle = TextEditingController();
   
  final textControllerCategory = TextEditingController();
@@ -21,6 +47,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final textControllerAditives = TextEditingController();
   final textControllerVitaminas = TextEditingController();
   final textControllerImagePath = TextEditingController();
+
+
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
    
@@ -62,7 +97,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     labelText: "Input the product description")),
              TextFormField(
               validator: (value) {
-                if (value!="Cookies" || value!="Fruit") {
+                if (value!="Candy" || value!="Fruit") {
                   return 'Write a valid category';
                 }
                 return null;
@@ -70,7 +105,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 controller: textControllerCategory,
                 decoration: const InputDecoration(
                     icon: Icon(Icons.abc_sharp),
-                    labelText: "Input the product Category: Cookies or Fruit")),
+                    labelText: "Input the product Category: Candies or Fruit")),
 
               const SizedBox(height: 10),
               const Text("Rating", style: TextStyle(color: Colors.grey),),
@@ -136,44 +171,57 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 decoration: const InputDecoration(
                     icon: Icon(Icons.check),
                     labelText: "Input the product vitamines")),
-                    TextFormField(
+              
+
+              TextField(
                 controller: textControllerImagePath,
                 decoration: const InputDecoration(
                     icon: Icon(Icons.image),
                     labelText: "Input the product image link")),
+              const SizedBox(height: 10,),
+              
+              FloatingActionButton(heroTag: "photo", onPressed: () {
+                pickImage(); 
+              },
+              elevation: 0,
+              backgroundColor: Colors.orange[300],
+              child: const Icon(Icons.photo),),
+
           
-          const SizedBox(height: 20,),
+          const SizedBox(height: 30,),
           
-          FloatingActionButton.extended
-          (label: const Text("Save the new product", 
-          style: TextStyle(color: Colors.white, fontSize: 15,)),
-          backgroundColor: Colors.orange[300],
-          icon: const Icon(Icons.save_alt_rounded, size: 25.0, color: Colors.white,),
+          FloatingActionButton.extended(
+            elevation: 0,
+            label: const Text("Save the new product", 
+            style: TextStyle(color: Colors.white, fontSize: 15,)),
+            backgroundColor: Colors.orange,
+            icon: const Icon(Icons.save_alt_rounded, size: 25.0, color: Colors.white,),
             onPressed: () async {
-              DatabaseHelper.instance.add(Product(category: textControllerCategory.text, price: double.parse(textControllerPrice.text), ranking: ratingvalue, title: textControllerTitle.text, description: textControllerDescription.text, calories: textControllerCalories.text, aditives: textControllerAditives.text, vitamines: textControllerVitaminas.text, imagepath: textControllerImagePath.text));
+              DatabaseHelper.instance.add(Product( category: textControllerCategory.text, price: double.parse(textControllerPrice.text), ranking: ratingvalue, title: textControllerTitle.text, description: textControllerDescription.text, calories: textControllerCalories.text, aditives: textControllerAditives.text, vitamines: textControllerVitaminas.text, imagepath: textControllerImagePath.text));
               setState(() {
-              textControllerPrice.clear();
-              textControllerCategory.clear();
-              textControllerAditives.clear();
-              textControllerCalories.clear();
-              textControllerDescription.clear();
-              textControllerImagePath.clear();
-              textControllerTitle.clear();
-              textControllerVitaminas.clear();
+                textControllerPrice.clear();
+                textControllerCategory.clear();
+                textControllerAditives.clear();
+                textControllerCalories.clear();
+                textControllerDescription.clear();
+                textControllerImagePath.clear();
+                textControllerTitle.clear();
+                textControllerVitaminas.clear();
               });
               final snackBar = SnackBar(
-            content: const Text('Product Added'),
-            action: SnackBarAction(
-              label: '',
-              onPressed: () {              
-              },
-            ),
-          );
+                content: const Text('Product Added'),
+                action: SnackBarAction(
+                  label: '',
+                  onPressed: () {              
+                  },
+                ),
+              );
 
-          // Find the ScaffoldMessenger in the widget tree
-          // and use it to show a SnackBar.
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            }),
+            // Find the ScaffoldMessenger in the widget tree
+            // and use it to show a SnackBar.
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+          ),
 
             const SizedBox(height: 5),
             

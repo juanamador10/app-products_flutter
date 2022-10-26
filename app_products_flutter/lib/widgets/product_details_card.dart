@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import '../screens/product_details.dart';
+import '../screens/product_details_screen.dart';
 
 class ProductDetailsCard extends StatelessWidget{
+  final int p_id;
   final String imagePath;
   final String title;
   final double price;
@@ -10,7 +12,7 @@ class ProductDetailsCard extends StatelessWidget{
 
 
   const ProductDetailsCard({Key? key, required this.imagePath, required this.title,
-  required this.price, required this.ranking }) : super(key: key);
+  required this.price, required this.ranking, required this.p_id, }) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -23,11 +25,8 @@ class ProductDetailsCard extends StatelessWidget{
             const SizedBox(height: 10),
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: Image(
-                image: NetworkImage(imagePath),
-                height: 200,
-                width: 150,
-              ),
+              child: Image.file(File(imagePath), height: 120,),
+
             ),
               
           ],
@@ -77,7 +76,7 @@ class ProductDetailsCard extends StatelessWidget{
                       Navigator.push(context,
                         MaterialPageRoute(
                           builder: (context) => ProductDetails(
-                            productTitle: title
+                            productIdCard: p_id
                           )
                         )
                       );

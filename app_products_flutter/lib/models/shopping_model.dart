@@ -16,7 +16,7 @@ class ShoppingCar {
   factory ShoppingCar.fromMap(Map<String, dynamic> json) => ShoppingCar(
     id: json['id'],  
     title: json['title'],
-    price: json['price'],
+    price: json['price'].toDouble(),
     quantity: json['quantity'],
     );
 
