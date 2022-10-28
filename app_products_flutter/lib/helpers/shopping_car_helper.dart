@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-
 import '../models/shopping_model.dart';
 
 class DatabaseHelperShoppingCar {
@@ -17,7 +16,7 @@ class DatabaseHelperShoppingCar {
     //specify a location in your phone to store the data base
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     //directorio donde se guardan los archivos
-    String path = join(documentsDirectory.path, 'shopping.db');
+    String path = join(documentsDirectory.path, 'rigelv6.db');
     //si no existe openDatabase crea la base de datos
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
@@ -26,19 +25,39 @@ class DatabaseHelperShoppingCar {
     await db.execute(
         //single ' tres veces para escribir en multilinea
         '''
+      
       CREATE TABLE shoppingCar
       (
         id INTEGER PRIMARY KEY,
         title TEXT,
         price INTEGER,
-        quantity INTEGER
+        quantity INTEGER,
+        imagepath TEXT,
+        subtotal INTEGER,
+        TOTAL INTEGER
       )
+
+      
+      
       ''');
   }
+
 
   Future<List<ShoppingCar>> getShoppingC() async {
     Database db = await instance.database;
     var shoppingCquery = await db.query('shoppingCar', orderBy: 'title');
+
+    //si no es empty ? (entonces)... has esto :(else) si no se cumple regresame la lista vacia
+    //Ternalia dicen
+    List<ShoppingCar> shoppingCarList = shoppingCquery.isNotEmpty
+        ? shoppingCquery.map((e) => ShoppingCar.fromMap(e)).toList()
+        : [];
+    return shoppingCarList;
+  }
+
+  Future<List<ShoppingCar>> getShoppingCarOneProduct(id) async {
+    Database db = await instance.database;
+    var shoppingCquery = await db.query('shoppingCar',where: 'id = ?', whereArgs: [id], limit: 1);
 
     //si no es empty ? (entonces)... has esto :(else) si no se cumple regresame la lista vacia
     //Ternalia dicen
@@ -58,10 +77,25 @@ class DatabaseHelperShoppingCar {
     Database db = await instance.database;
     return await db.delete('shoppingCar', where: 'id = ?', whereArgs: [id]);
   }
+  
 
   Future<int> updateShoppingC(ShoppingCar shoppingCar) async {
     Database db = await instance.database;
     return await db.update('shoppingCar', shoppingCar.toMap(),
         where: 'id = ?', whereArgs: [shoppingCar.id]);
+  }
+
+  Future <int?>countItems() async{
+    Database db = await instance.database;
+    final count =  Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM shoppingCar'));
+    
+    return count;
+  }
+
+  Future calculateTotal() async{
+    Database db = await instance.database;
+    var result = await db.rawQuery('SELECT SUM(subtotal) AS TOTAL FROM shoppingCar');
+    
+    return result.toList();
   }
 }

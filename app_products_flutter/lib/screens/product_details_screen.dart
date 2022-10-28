@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_products_flutter/screens/shopping_car.dart';
 import 'package:app_products_flutter/screens/shopping_car_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -12,20 +13,20 @@ import '../models/product_model.dart';
 import 'package:quantity_input/quantity_input.dart';
 import '../widgets/product_details_screen.dart';
 
-class ProductDetails extends StatefulWidget {
+class ProductDetailsScreen extends StatefulWidget {
   final int productIdCard;
 
-  const ProductDetails({Key? key, required this.productIdCard}) : super(key: key);
+
+  const ProductDetailsScreen({Key? key, required this.productIdCard}) : super(key: key);
 
   @override
-  State<ProductDetails> createState() => _ProductDetailsState();
+  State<ProductDetailsScreen> createState() => _ProductDetailsState();
 }
 
-class _ProductDetailsState extends State<ProductDetails> {
-  int productQuantity = 0;
+class _ProductDetailsState extends State<ProductDetailsScreen> {
+  int newQuantity = 1;
   @override
   Widget build(BuildContext context) {
-    int productQuantity = 0;
     return Scaffold(
       backgroundColor: Colors.orange[300],
       appBar: AppBar(
@@ -190,19 +191,12 @@ class _ProductDetailsState extends State<ProductDetails> {
 
                                         Row(
                                           children: [
-                                            Card(
-                                              shape: const RoundedRectangleBorder(
-                                                side: BorderSide(color: Colors.black),
-                                                borderRadius: BorderRadius.all(Radius.circular(50))
-                                              ),
-                                              child: QuantityInput(
-                                                elevation: 0,
-                                                buttonColor:Colors.white,
-                                                iconColor: Colors.black,
-                                                value: productQuantity,
-                                                onChanged: (value) => setState(() => 
-                                                  productQuantity =int.parse(value.replaceAll(',','')))),
-                                            ),
+                                            QuantityInput(
+                                              buttonColor: Colors.black,
+                                              acceptsZero: false,
+                                              minValue: 1,
+                                              value: newQuantity,
+                                              onChanged: (value) => setState(() => newQuantity = int.parse(value))),
                                             const Spacer(),
                                             Text("\$${product.price}",
                                               style: const TextStyle(fontSize: 20),
@@ -217,11 +211,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                                               child: FloatingActionButton.extended(
                                                 elevation: 0,
                                                 onPressed:()async {
-                                                  DatabaseHelperShoppingCar.instance.addShoppingCar(ShoppingCar(price: product.price, title: product.title,quantity: productQuantity));
+                                                  DatabaseHelperShoppingCar.instance.addShoppingCar(
+                                                    ShoppingCar(
+                                                      price: product.price, 
+                                                      title: product.title, 
+                                                      quantity: newQuantity, 
+                                                      imagepath: product.imagepath));
+
                                                   Navigator.push(context,
                                                     MaterialPageRoute(builder:(context) =>
                                                       ShoppingCarScreen(
-                                                        productQuantity:productQuantity,
+                                                        productQuantity: newQuantity,
+                                                        productName: product.title,
+                                                        productPrice: product.price,
+                                                        produtId: product.id!.toInt(),
                                                       )
                                                     )
                                                   );

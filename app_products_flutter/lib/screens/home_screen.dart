@@ -19,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String selectedCategory = "candy";
   int productId = 1;
+  String productTitle = "";
   String noImage = "https://dues.com.mx/duesAdmin/assets/web-page/logos/defaultSF.png";
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          selectedCategory = "candies";
+                          selectedCategory = "candy";
                           print(selectedCategory);
                         });
                       },
@@ -160,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onLongPress: () {
                                   Navigator.push(context,
                                     MaterialPageRoute(
-                                      builder: (context) => ProductDetails(productIdCard: productId,)
+                                      builder: (context) => ProductDetailsScreen(productIdCard: productId)
                                     )
                                   );
                                 },

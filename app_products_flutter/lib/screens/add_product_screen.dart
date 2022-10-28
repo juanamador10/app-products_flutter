@@ -105,7 +105,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 controller: textControllerCategory,
                 decoration: const InputDecoration(
                     icon: Icon(Icons.abc_sharp),
-                    labelText: "Input the product Category: Candies or Fruit")),
+                    labelText: "Input the product Category: Candy or Fruit")),
 
               const SizedBox(height: 10),
               const Text("Rating", style: TextStyle(color: Colors.grey),),
