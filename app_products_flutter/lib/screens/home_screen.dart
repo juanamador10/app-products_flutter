@@ -8,6 +8,9 @@ import '../helpers/database_helper.dart';
 import '../models/product_model.dart';
 
 import 'add_product_screen.dart';
+import 'country_screen2.dart';
+import 'currency_screen.dart';
+import 'international_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -29,6 +32,42 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0, 
+        backgroundColor: Colors.orange[300]
+      ),
+        drawer: Drawer(
+            child: ListView(padding: EdgeInsets.zero,
+                // ignore: prefer_const_literals_to_create_immutables
+                children: [
+              const DrawerHeader(
+                child: Text("Menu", style: TextStyle(color: Colors.black, fontSize: 20))),
+              ListTile(
+                title: const Text("Countries"),
+                onTap: () {
+                  final route = MaterialPageRoute(
+                    builder: (context) => CountryScreen2());
+                  Navigator.push(context, route);
+                },
+              ),
+              ListTile(
+                title: const Text("International Stores"),
+                onTap: () {
+                  final route = MaterialPageRoute(
+                    builder: (context) => InternationalScreen());
+                  Navigator.push(context, route);
+                },
+              ),
+              ListTile(
+                title: const Text("Currency"),
+                onTap: () {
+                  final route = MaterialPageRoute(builder: (context) => CurrencyScreen());
+                  Navigator.push(context, route);
+                },
+              )
+            ]
+          )
+        ),
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -36,8 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 70),
-            Row(
+            const SizedBox(height: 10),
+            /*Row(
               children: const [
                 Icon(Icons.menu, size: 30),
                 Spacer(),
@@ -45,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ]
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 20),*/
             const Text("Hello"),
             const Text("What today's taste?", style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 20),
